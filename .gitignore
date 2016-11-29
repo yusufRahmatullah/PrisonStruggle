@@ -91,3 +91,7 @@ ENV/
 # Prison Struggle Config
 config.json
 
+# Image file
+*.png
+*.jpg
+*.bmp
