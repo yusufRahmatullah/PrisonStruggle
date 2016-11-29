@@ -1,0 +1,640 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- saved from url=(0040)http://www.prisonstruggle.com/mentor.php -->
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<!--<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> -->
+<meta http-equiv="Content-Type" content="text/html; charset=" iso-8859-1"=""> 
+<title>PS: Mentor</title>
+
+<link rel="icon" type="image/png" href="http://www.prisonstruggle.com/favicon.png">
+<link rel="shortcut icon" type="image/x-icon" href="http://www.prisonstruggle.com/favicon.png">
+
+<meta name="description" content="Free MMORPG game set in prison. Think you got what it takes to earn the respect from thousands of other inmates?! Then sign up free today">
+<meta name="keywords" content="free mmorpg, mmorpg, free mmo,free online mmorpg, free mmo games, mmog, rpg, free online rpg, online rpg, free rpg">
+<link href="./PS_ Mentor_files/stylesheet.css" rel="stylesheet" type="text/css">
+<!--[if lt IE 7]>
+<script defer type="text/javascript" src="pngfix.js"></script>
+<![endif]-->
+<script language="JavaScript" type="text/JavaScript" src="./PS_ Mentor_files/jquery.js.download"></script>
+<script language="JavaScript" type="text/JavaScript" src="./PS_ Mentor_files/common02.js.download"></script>
+<!--[if IE]><script language="JavaScript" type="text/JavaScript" src="includes/js/excanvas.compiled.js"></script><![endif]-->
+
+<script src="./PS_ Mentor_files/name.js.download" type="text/javascript"></script>
+<script src="./PS_ Mentor_files/urchin.js.download" type="text/javascript"></script>
+<script type="text/javascript">
+_uacct = "UA-627736-4";
+urchinTracker();
+</script>
+<style type="text/css">
+#dhtmltooltip {
+	position: absolute;
+	width: 150px;
+	border: 2px solid black;
+	padding: 2px;
+	background-color: lightyellow;
+	visibility: hidden;
+	z-index: 100;
+	/*Remove below line to remove shadow. Below line should always appear last within this CSS*/
+	filter: progid :   DXImageTransform .   Microsoft .
+		 Shadow(color =   gray, direction =   135);
+}
+</style>
+<script language="javascript" type="text/javascript">
+<!--
+	var CONST_WAITING_FOR_NAME = "Waiting for name...";
+	var CONST_WAITING = "Waiting...";
+//-->
+</script>
+<script type="text/javascript" src="./PS_ Mentor_files/ajaxFunctions2.js.download"></script>
+<script type="text/javascript">
+function clean_inputs(objText) {
+	objText.value = objText.value.replace(new RegExp(/_|\\|\]|\[|\^|[^0-9A-z]/), ' ');
+}
+function isSplChar(objText)
+{
+	var objText	=	document.getElementById(objText);
+	var str		=	objText.value;
+	if(str.search(/_|\\|\]|\[|\^|[^0-9 A-z]/)!='-1')
+	{
+		alert('Please enter alphanumeric value');
+		return false;
+	}
+	else
+		return true;
+}
+
+function checkState(objectname) {
+    var myElement=document.getElementById(objectname);
+    if (myElement.style.display=='none') myElement.style.display='inline';
+    else myElement.style.display='none';
+}
+
+</script>
+</head>
+<body>
+<div id="dhtmltooltip" style="left: -1000px; top: 359px; visibility: hidden;">&nbsp;<b>Energy</b><br>0 / 16 [0%]</div>
+<script type="text/javascript">
+
+/***********************************************
+* Cool DHTML tooltip script- ? Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+***********************************************/
+
+var offsetxpoint=-60 //Customize x offset of tooltip
+var offsetypoint=20 //Customize y offset of tooltip
+var ie=document.all
+var ns6=document.getElementById && !document.all
+var enabletip=false
+if (ie||ns6)
+var tipobj=document.all? document.all["dhtmltooltip"] : document.getElementById? document.getElementById("dhtmltooltip") : ""
+
+function ietruebody(){
+return (document.compatMode && document.compatMode!="BackCompat")? document.documentElement : document.body
+}
+
+function ddrivetip(thetext, thecolor, thewidth){
+if (ns6||ie){
+if (typeof thewidth!="undefined") tipobj.style.width=thewidth+"px"
+if (typeof thecolor!="undefined" && thecolor!="") tipobj.style.backgroundColor=thecolor
+tipobj.innerHTML=thetext
+enabletip=true
+return false
+}
+}
+
+function positiontip(e){
+if (enabletip){
+var curX=(ns6)?e.pageX : event.clientX+ietruebody().scrollLeft;
+var curY=(ns6)?e.pageY : event.clientY+ietruebody().scrollTop;
+//Find out how close the mouse is to the corner of the window
+var rightedge=ie&&!window.opera? ietruebody().clientWidth-event.clientX-offsetxpoint : window.innerWidth-e.clientX-offsetxpoint-20
+var bottomedge=ie&&!window.opera? ietruebody().clientHeight-event.clientY-offsetypoint : window.innerHeight-e.clientY-offsetypoint-20
+
+var leftedge=(offsetxpoint<0)? offsetxpoint*(-1) : -1000
+
+//if the horizontal distance isn't enough to accomodate the width of the context menu
+if (rightedge<tipobj.offsetWidth)
+//move the horizontal position of the menu to the left by it's width
+tipobj.style.left=ie? ietruebody().scrollLeft+event.clientX-tipobj.offsetWidth+"px" : window.pageXOffset+e.clientX-tipobj.offsetWidth+"px"
+else if (curX<leftedge)
+tipobj.style.left="5px"
+else
+//position the horizontal position of the menu where the mouse is positioned
+tipobj.style.left=curX+offsetxpoint+"px"
+
+//same concept with the vertical position
+if (bottomedge<tipobj.offsetHeight)
+tipobj.style.top=ie? ietruebody().scrollTop+event.clientY-tipobj.offsetHeight-offsetypoint+"px" : window.pageYOffset+e.clientY-tipobj.offsetHeight-offsetypoint+"px"
+else
+tipobj.style.top=curY+offsetypoint+"px"
+tipobj.style.visibility="visible"
+}
+}
+
+function hideddrivetip(){
+if (ns6||ie){
+enabletip=false
+tipobj.style.visibility="hidden"
+tipobj.style.left="-1000px"
+tipobj.style.backgroundColor=''
+tipobj.style.width=''
+}
+}
+
+document.onmousemove=positiontip
+
+</script>
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody><tr>
+  <td width="100%"><!-- Start div: "Whole Container" -->
+    <div id="whole-container">
+    <!-- Strart div: "Header Image" -->
+    <div id="header-image">
+      <!-- Start div: "Header" -->
+      <div id="header">
+        <div class="link-logo" onclick="location=&#39;index.php&#39;"></div>
+        <div class="text"> <img width="16" height="16" src="./PS_ Mentor_files/clock_red.png"> Server Time:&nbsp;September 22, 2016 12:47:48pm </div>
+      </div>
+      <!-- Finish div: "Header" -->
+    </div>
+    <!-- Finish div: "Header Image" -->
+    <!-- Start div: "Content" -->
+    <div id="content" style="overflow:hidden">
+    <!-- Start div: "Sidebar" -->
+    <table width="100%" cellspacing="0" cellpadding="0" border="0">
+    <tbody><tr>
+      <td valign="top"><div id="sidebar">
+          <div id="profile" style="position:relative;">
+                            <div class="top-information">
+              <table cellpadding="0" cellspacing="0">
+                <tbody><tr>
+                    <td valign="top"><a href="http://www.prisonstruggle.com/profiles.php?id=185148"> <img src="./PS_ Mentor_files/alpha.jpg" width="40" height="60" class="image-float"></a>
+                                        </td>
+                    <td>
+                    <a href="http://www.prisonstruggle.com/profiles.php?id=322165"><font color="#cdc6a2">yusufr</font></a> [322165]<br>
+                      Level: <strong>
+                      7
+                      </strong><br>
+                      <img width="16" height="16" src="./PS_ Mentor_files/money.png"> <strong>$
+                      0
+                      </strong> <a href="http://www.prisonstruggle.com/bank.php?dep=1" onmouseover="ddrivetip(&#39; &lt;b&gt;Deposit Money&lt;/b&gt;&#39;, &#39;#96926f&#39;, 90)" ;="" onmouseout="hideddrivetip()"><img src="./PS_ Mentor_files/money-icon-1.jpg"></a> <a href="http://www.prisonstruggle.com/index.php?view=sendmoney" onmouseover="ddrivetip(&#39; &lt;b&gt;Send Money&lt;/b&gt;&#39;, &#39;#96926f&#39;, 75)" ;="" onmouseout="hideddrivetip()"><img src="./PS_ Mentor_files/arrow-icon-1.jpg"></a><br>
+                      <span onmouseover="ddrivetip(&#39; &lt;b&gt;Points&lt;/b&gt;&lt;br/&gt;412/130,000&#39;, &#39;#96926f&#39;, 85)" ;="" onmouseout="hideddrivetip()">Points: <strong>
+                      412
+                      </strong></span> <a href="http://www.prisonstruggle.com/spendpoints.php" onmouseover="ddrivetip(&#39; &lt;b&gt;Spend Points&lt;/b&gt;&#39;, &#39;#96926f&#39;, 77)" ;="" onmouseout="hideddrivetip()"><img src="./PS_ Mentor_files/house-icon-1.jpg"></a> <a href="http://www.prisonstruggle.com/sendpoints.php" onmouseover="ddrivetip(&#39; &lt;b&gt;Send Points&lt;/b&gt;&#39;, &#39;#96926f&#39;, 75)" ;="" onmouseout="hideddrivetip()"><img src="./PS_ Mentor_files/arrow-icon-1.jpg"></a>
+                    </td>
+                </tr>
+              </tbody></table>
+               </div>
+            <div class="bottom-information">HP:<img src="./PS_ Mentor_files/bar-15.jpg" onmouseover="ddrivetip(&#39; &lt;b&gt;HP&lt;/b&gt;&lt;BR&gt;350 / 350 [100%]&#39;, &#39;#96926f&#39;, 90)" ;="" onmouseout="hideddrivetip()"><br>
+              <a style="color: black;" href="http://www.prisonstruggle.com/spendpoints.php?spend=energy" onmouseover="ddrivetip(&#39; &lt;b&gt;Refill Energy&lt;/b&gt;&#39;, &#39;#96926f&#39;, 77)" ;="" onmouseout="hideddrivetip()">Energy</a>:<img src="./PS_ Mentor_files/bar-00.jpg" onmouseover="ddrivetip(&#39; &lt;b&gt;Energy&lt;/b&gt;&lt;BR&gt;0 / 16 [0%]&#39;, &#39;#96926f&#39;, 77)" ;="" onmouseout="hideddrivetip()"><br>
+              Awake:<img src="./PS_ Mentor_files/bar-06.jpg" onmouseover="ddrivetip(&#39; &lt;b&gt;Awake&lt;/b&gt;&lt;BR&gt;84 / 200 [42%]&#39;, &#39;#96926f&#39;, 77)" ;="" onmouseout="hideddrivetip()"><br>
+              <a style="color: black;" href="http://www.prisonstruggle.com/spendpoints.php?spend=nerve" onmouseover="ddrivetip(&#39; &lt;b&gt;Refill Nerve&lt;/b&gt;&#39;, &#39;#96926f&#39;, 77)" ;="" onmouseout="hideddrivetip()">Nerve</a>:<img src="./PS_ Mentor_files/bar-01.jpg" onmouseover="ddrivetip(&#39; &lt;b&gt;Nerve&lt;/b&gt;&lt;BR&gt;1 / 11 [9%]&#39;, &#39;#96926f&#39;, 77)" ;="" onmouseout="hideddrivetip()"><br>
+              XP:<img src="./PS_ Mentor_files/bar-01.gif" onmouseover="ddrivetip(&#39; &lt;b&gt;Xp&lt;/b&gt;&lt;BR&gt;974 / 9526 [10%]&#39;, &#39;#96926f&#39;, 77)" ;="" onmouseout="hideddrivetip()"><br>
+            </div>
+            <div class="btn">
+              <ul>
+                <li class="preference"><img width="16" height="16" src="./PS_ Mentor_files/preferences.png">&nbsp;<a href="http://www.prisonstruggle.com/preferences.php">Preferences</a></li>
+                <li class="log"><img width="16" height="16" src="./PS_ Mentor_files/disconnect.png">&nbsp;<a href="http://www.prisonstruggle.com/index.php?action=logout">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+                                        <div id="Menu">
+            <div id="title"></div>
+            <ul>
+              <li><a href="http://www.prisonstruggle.com/announcement.php" style="color:darkred;">New Announcement</a></li><li><a href="http://www.prisonstruggle.com/mentor.php"><span style="color:black;"><img src="./PS_ Mentor_files/aprentice.png">  Mentor [0]</span></a></li>  
+		<li><a href="http://www.prisonstruggle.com/index.php"><img width="16" height="16" src="./PS_ Mentor_files/house.png">&nbsp;Cell</a></li>
+		<li><a href="http://www.prisonstruggle.com/city.php"><img width="16" height="16" src="./PS_ Mentor_files/map.png">&nbsp;Panama</a></li>
+		<li><a href="http://www.prisonstruggle.com/inventory.php"><img width="16" height="16" src="./PS_ Mentor_files/briefcase.png">&nbsp;Inventory</a></li>
+		<li><a href="http://www.prisonstruggle.com/bank.php"><img width="16" height="16" src="./PS_ Mentor_files/coins.png">&nbsp;Bank</a></li>
+		<li><a href="http://www.prisonstruggle.com/gym.php"><img width="16" height="16" src="./PS_ Mentor_files/Training.png">&nbsp;Gym</a></li>
+		<li><a href="http://www.prisonstruggle.com/crime.php"><img width="16" height="16" src="./PS_ Mentor_files/crime.png">&nbsp;Crimes</a></li>
+		<li><a href="http://www.prisonstruggle.com/pms.php"><img width="16" height="16" src="./PS_ Mentor_files/mailbox.png">&nbsp;<span style="color:darkred">Mailbox&nbsp;[2]</span></a></li>
+		<li><a href="http://www.prisonstruggle.com/events.php"><img width="16" height="16" src="./PS_ Mentor_files/events.png">&nbsp;Events&nbsp;[0]</a></li>
+		<li><a href="http://www.prisonstruggle.com/rules.php"><img width="16" height="16" src="./PS_ Mentor_files/rules.png">&nbsp;Rules</a></li>
+        <li><a href="http://www.prisonstruggle.com/downtown.php"><img width="16" height="16" src="./PS_ Mentor_files/world.png"> <span style="color:;">Search the Prison Yard</span></a></li>
+			<li><a href="http://www.prisonstruggle.com/support.php?view=opened"><img width="16" height="16" src="./PS_ Mentor_files/help.png">&nbsp;Support Center&nbsp;[0]</a></li>
+		<li><a href="http://www.prisonstruggle.com/dailyvisits.php"><img width="16" height="16" src="./PS_ Mentor_files/visitorIcon.png">&nbsp;<span href="dailyvisits.php">Daily Visits</span></a></li>
+            </ul>
+          </div>
+        </div></td>
+      <td valign="top"><!-- Finish div: "Sidebar" -->
+        <!-- strart div: "Content Fixed" -->
+	       <table width="100%" cellspacing="0" cellpadding="0" border="0">
+          <tbody><tr valign="top">
+            <td valign="top"><div id="content-fidex">
+                <div id="news">
+                  <b>Ad:</b> <a href="http://www.prisonstruggle.com/refer.php">refer.php</a> Refer for points+! 750 points per valid referral + - <a href="http://www.prisonstruggle.com/viewgang.php?id=27" title="[Gang Leader][The Prison Guards]">[<b><span id="gangtag129084" onmouseover="changeTag129084();" onmouseout="backTag129084();"><span style="color:#0000FF">P</span><span style="color:#FFFFFF">.</span><span style="color:#0000FF">G</span></span><script type="text/javascript">
+                        function changeTag129084() {
+			            var cspan=document.getElementById("gangtag129084").getElementsByTagName("span");
+		                if (cspan.length >=1 ) {
+				            cspan[0].style.color = "#FFFFFF";
+				            cspan[0].innerHTML = "P";
+				            
+				            cspan[1].style.color = "#0000FF";
+				            cspan[1].innerHTML = ".";
+				            
+				            cspan[2].style.color = "#FFFFFF";
+				            cspan[2].innerHTML = "G";
+				            }
+		                }
+
+		                function backTag129084() {
+			            var cspan=document.getElementById("gangtag129084").getElementsByTagName("span");
+		                if (cspan.length >=1 ) {
+                            cspan[0].style.color = "#0000FF";
+				            cspan[0].innerHTML = "P";
+				            
+                            cspan[1].style.color = "#FFFFFF";
+				            cspan[1].innerHTML = ".";
+				            
+                            cspan[2].style.color = "#0000FF";
+				            cspan[2].innerHTML = "G";
+				            }
+		                }
+		                </script></b>]</a><b><a title="[Respected Prisoner] [Admin]  [1456 RP Days Left]" href="http://www.prisonstruggle.com/profiles.php?id=303023"><font color="darkblue">MrBruteforce</font></a></b> <a href="http://www.prisonstruggle.com/userads.php?action=report&amp;id=1970714"><img src="./PS_ Mentor_files/ban.png" border="0" title="report"></a>                </div>
+                <div id="sub-menu">
+                                        <div id="best-inmates" style="background:#28271f url(&#39;css/images/prison1.png&#39;) left no-repeat;">
+                        <ul>
+                            <li class="gold"><a href="http://www.prisonstruggle.com/viewgang.php?id=3810" title="[&#9763;Illegitimate Bastards&#9763;]">[<span id="gangtag174596" onmouseover="changeTag174596();" onmouseout="backTag174596();"><span style="color:#000000">•</span><span style="color:#FFFFFF">•</span><span style="color:#000000">•</span></span><script type="text/javascript">
+                        function changeTag174596() {
+			            var cspan=document.getElementById("gangtag174596").getElementsByTagName("span");
+		                if (cspan.length >=1 ) {
+				            cspan[0].style.color = "#000000";
+				            cspan[0].innerHTML = "•";
+				            
+				            cspan[1].style.color = "#EE0000";
+				            cspan[1].innerHTML = "•";
+				            
+				            cspan[2].style.color = "#000000";
+				            cspan[2].innerHTML = "•";
+				            }
+		                }
+
+		                function backTag174596() {
+			            var cspan=document.getElementById("gangtag174596").getElementsByTagName("span");
+		                if (cspan.length >=1 ) {
+                            cspan[0].style.color = "#000000";
+				            cspan[0].innerHTML = "•";
+				            
+                            cspan[1].style.color = "#FFFFFF";
+				            cspan[1].innerHTML = "•";
+				            
+                            cspan[2].style.color = "#000000";
+				            cspan[2].innerHTML = "•";
+				            }
+		                }
+		                </script>]</a><a href="http://www.prisonstruggle.com/profiles.php?id=319902"><font color="#cdc6a2">MrWolf</font></a></li>
+                            <li class="silver"><a href="http://www.prisonstruggle.com/viewgang.php?id=4280" title="[Love 2 Hate]">[<span id="gangtag935237" onmouseover="changeTag935237();" onmouseout="backTag935237();"><span style="color:#FFFF00">L</span><span style="color:#FFFF00">2</span><span style="color:#FFFF00">H</span></span><script type="text/javascript">
+                        function changeTag935237() {
+			            var cspan=document.getElementById("gangtag935237").getElementsByTagName("span");
+		                if (cspan.length >=1 ) {
+				            cspan[0].style.color = "#CC0000";
+				            cspan[0].innerHTML = "H";
+				            
+				            cspan[1].style.color = "#CC0000";
+				            cspan[1].innerHTML = "2";
+				            
+				            cspan[2].style.color = "#CC0000";
+				            cspan[2].innerHTML = "L";
+				            }
+		                }
+
+		                function backTag935237() {
+			            var cspan=document.getElementById("gangtag935237").getElementsByTagName("span");
+		                if (cspan.length >=1 ) {
+                            cspan[0].style.color = "#FFFF00";
+				            cspan[0].innerHTML = "L";
+				            
+                            cspan[1].style.color = "#FFFF00";
+				            cspan[1].innerHTML = "2";
+				            
+                            cspan[2].style.color = "#FFFF00";
+				            cspan[2].innerHTML = "H";
+				            }
+		                }
+		                </script><img src="./PS_ Mentor_files/xstar.png" width="6" style="vertical-align:top">]</a><a href="http://www.prisonstruggle.com/profiles.php?id=320403"><font color="#cdc6a2">Luizeduardojj</font></a></li>
+                            <li class="bronce"><a href="http://www.prisonstruggle.com/viewgang.php?id=8123" title="[Hitmen 4 Hire]">[<span id="gangtag411597" onmouseover="changeTag411597();" onmouseout="backTag411597();"><span style="color:#660000">H</span><span style="color:#000000">4</span><span style="color:#660000">H</span></span><script type="text/javascript">
+                        function changeTag411597() {
+			            var cspan=document.getElementById("gangtag411597").getElementsByTagName("span");
+		                if (cspan.length >=1 ) {
+				            cspan[0].style.color = "#000000";
+				            cspan[0].innerHTML = "H";
+				            
+				            cspan[1].style.color = "#660000";
+				            cspan[1].innerHTML = "F";
+				            
+				            cspan[2].style.color = "#000000";
+				            cspan[2].innerHTML = "H";
+				            }
+		                }
+
+		                function backTag411597() {
+			            var cspan=document.getElementById("gangtag411597").getElementsByTagName("span");
+		                if (cspan.length >=1 ) {
+                            cspan[0].style.color = "#660000";
+				            cspan[0].innerHTML = "H";
+				            
+                            cspan[1].style.color = "#000000";
+				            cspan[1].innerHTML = "4";
+				            
+                            cspan[2].style.color = "#660000";
+				            cspan[2].innerHTML = "H";
+				            }
+		                }
+		                </script>]</a><a href="http://www.prisonstruggle.com/profiles.php?id=322160"><font color="#cdc6a2">McCormack</font></a>&nbsp;<img src="./PS_ Mentor_files/policeIcon.png"></li>
+                        </ul>
+                        </div>
+                                          <div id="navbar">
+                    <ul>
+                      <li class="arrow"><a href="http://www.prisonstruggle.com/rpstore.php">Upgrade Inmate</a></li>
+                      <li class="head"><a href="http://www.prisonstruggle.com/refer.php">Refer for points</a></li>
+                      <li class="hart"><a href="http://www.prisonstruggle.com/vote.php">Vote for points</a></li>
+                    </ul>
+                  </div>
+                </div>
+              </div></td>
+          </tr>
+          
+	        </tbody></table>
+        <table><tbody><tr><td>
+	        <table class="mainbox">
+		        <tbody><tr>
+          <td class="contenthead">Gangs</td>
+        </tr>
+        <tr>
+          <td class="contentcontent">You have new gang invitations <a href="http://www.prisonstruggle.com/ganginvites.php">View Gang Invites</a></td>
+        </tr>
+                        
+        <style>
+    .mentor
+    {
+        float:left;
+
+    }
+    .apprentice
+    {
+        float:right;
+
+    }
+      .mentorname
+    {
+         float:left;
+          
+
+    }
+    .apprenticename
+    {
+        float:right;
+
+    }
+     .mentorheader
+    {
+         width:422px;
+         height: 10px;
+        background-image:url("images/chat/chatBallon_top_left.png");
+         background-repeat:no-repeat;
+
+    }
+    .apprenticeheader
+    {
+         width:422px;
+        height: 10px;
+        background-image:url("images/chat/chatBallon_top_right.png");
+        background-repeat:no-repeat;
+
+    }
+    .msgfooter
+    {
+
+        background-image:url("images/chat/chatBallon_bottom.png") ;
+        background-repeat:no-repeat;
+    }
+     .msgfooterR
+    {
+
+        background-image:url("images/chat/chatBallon_bottom_right.png") ;
+        background-repeat:no-repeat;
+    }
+
+    .msgH
+    {
+        width:395px;
+        padding-left:20px;
+        
+        background-image:url("images/chat/chatBallon_middle.png");
+          background-repeat:repeat-y;
+    }
+
+    .msgH a
+    {
+        color: #434234;
+    }
+
+    .msgHR
+    {
+        width:395px;
+        padding-left:20px;
+
+        background-image:url("images/chat/chatBallon_middle_right.png");
+          background-repeat:repeat-y;
+    }
+    .timestamp
+    {
+        font-style:italic;
+        color:black;
+    }
+    .conversationbody
+    {
+
+    }
+    .msgH
+    {
+
+    }
+
+</style>
+<tr>
+	<td class="contenthead">Your mentor</td>
+</tr>
+
+<tr>
+	<td class="contentcontent">
+                 <a href="http://www.prisonstruggle.com/viewgang.php?id=7499" title="[The Oracles]">[<span><span style="color:#FFFFFF">I</span><span style="color:#FFFFFF">W</span><span style="color:#FFFFFF">W</span></span><img src="./PS_ Mentor_files/xstar.png" width="6" style="vertical-align:top">]</a><b><a title="[Respected Prisoner]  [44 RP Days Left]" href="http://www.prisonstruggle.com/profiles.php?id=257515"><font color="darkred">Mephisto</font></a></b>  | <a style="cursor:pointer;" onclick="if(confirm(&quot;Are you sure you want a new mentor? You only have 2 mentor changes left.&quot;)){location=&quot;?action=changeFromMentor&quot;;}">Change mentor </a>
+    </td>
+</tr>
+<tr>
+	<td class="contenthead">Talk to your mentor"</td>
+</tr>
+<tr>
+	<td class="contentcontent">
+<br><br>    <div style="width:100%;text-align:center;">
+        <form method="POST" action="http://www.prisonstruggle.com/mentor.php?conversation="><input type="hidden" name="action" value="SendMessage">
+            <table width="100%">
+
+                <tbody><tr><td style="text-align:left;padding-left:70px;"></td></tr><tr>
+                <td>
+                    <textarea rows="7" cols="60" name="msg"></textarea>
+
+                </td></tr>
+                <tr><td style="text-align:center;"><input type="Submit" value="Send Message" class="button"></td></tr>
+            </tbody></table>
+        </form>
+    </div>
+    	     <table width="100%">
+                         <tbody><tr><td>
+
+             <div class="mentorname"><a href="http://www.prisonstruggle.com/viewgang.php?id=7499" title="[The Oracles]">[<span><span style="color:#FFFFFF">I</span><span style="color:#FFFFFF">W</span><span style="color:#FFFFFF">W</span></span><img src="./PS_ Mentor_files/xstar.png" width="6" style="vertical-align:top">]</a><b><a title="[Respected Prisoner]  [44 RP Days Left]" href="http://www.prisonstruggle.com/profiles.php?id=257515"><font color="darkred">Mephisto</font></a></b><br>
+                 <div class="timestamp">19/09/2016 22:36:02</div>
+                                     <div><a href="http://www.prisonstruggle.com/mentor.php?report=110939&amp;conversation="><img style="height:20px;" src="./PS_ Mentor_files/reportbi9.png"> Report</a></div>
+                          </div>
+             <div class="mentor">
+                     <div class="mentorheader">&nbsp;</div>
+                     <div class="msgH">
+                     <div style="padding:5px;">http://www.prisonstruggle.com/mugcontract.php</div>
+                     </div>
+                 <div class="msgfooter">&nbsp;</div>
+             </div>
+
+             </td></tr>
+             <tr><td>&nbsp;</td></tr>
+                         <tr><td>
+
+             <div class="apprenticename"><a href="http://www.prisonstruggle.com/profiles.php?id=322165"><font color="#cdc6a2">yusufr</font></a><br>
+                 <div class="timestamp">19/09/2016 22:33:46</div>
+                              </div>
+             <div class="apprentice">
+                     <div class="apprenticeheader">&nbsp;</div>
+                     <div class="msgHR">
+                     <div style="padding:5px;">how to do that?</div>
+                     </div>
+                 <div class="msgfooterR">&nbsp;</div>
+             </div>
+
+             </td></tr>
+             <tr><td>&nbsp;</td></tr>
+                         <tr><td>
+
+             <div class="mentorname"><a href="http://www.prisonstruggle.com/viewgang.php?id=7499" title="[The Oracles]">[<span><span style="color:#FFFFFF">I</span><span style="color:#FFFFFF">W</span><span style="color:#FFFFFF">W</span></span><img src="./PS_ Mentor_files/xstar.png" width="6" style="vertical-align:top">]</a><b><a title="[Respected Prisoner]  [44 RP Days Left]" href="http://www.prisonstruggle.com/profiles.php?id=257515"><font color="darkred">Mephisto</font></a></b><br>
+                 <div class="timestamp">19/09/2016 18:09:33</div>
+                                     <div><a href="http://www.prisonstruggle.com/mentor.php?report=110937&amp;conversation="><img style="height:20px;" src="./PS_ Mentor_files/reportbi9.png"> Report</a></div>
+                          </div>
+             <div class="mentor">
+                     <div class="mentorheader">&nbsp;</div>
+                     <div class="msgH">
+                     <div style="padding:5px;">don't level.<br>
+start failmugging now.<br>
+the best way to make money/points.<br>
+<br>
+:)</div>
+                     </div>
+                 <div class="msgfooter">&nbsp;</div>
+             </div>
+
+             </td></tr>
+             <tr><td>&nbsp;</td></tr>
+                         <tr><td>
+
+             <div class="apprenticename"><a href="http://www.prisonstruggle.com/profiles.php?id=322165"><font color="#cdc6a2">yusufr</font></a><br>
+                 <div class="timestamp">19/09/2016 11:43:55</div>
+                              </div>
+             <div class="apprentice">
+                     <div class="apprenticeheader">&nbsp;</div>
+                     <div class="msgHR">
+                     <div style="padding:5px;">so, what must i do next?</div>
+                     </div>
+                 <div class="msgfooterR">&nbsp;</div>
+             </div>
+
+             </td></tr>
+             <tr><td>&nbsp;</td></tr>
+                         <tr><td>
+
+             <div class="mentorname"><a href="http://www.prisonstruggle.com/viewgang.php?id=7499" title="[The Oracles]">[<span><span style="color:#FFFFFF">I</span><span style="color:#FFFFFF">W</span><span style="color:#FFFFFF">W</span></span><img src="./PS_ Mentor_files/xstar.png" width="6" style="vertical-align:top">]</a><b><a title="[Respected Prisoner]  [44 RP Days Left]" href="http://www.prisonstruggle.com/profiles.php?id=257515"><font color="darkred">Mephisto</font></a></b><br>
+                 <div class="timestamp">18/09/2016 6:42:54</div>
+                                     <div><a href="http://www.prisonstruggle.com/mentor.php?report=110917&amp;conversation="><img style="height:20px;" src="./PS_ Mentor_files/reportbi9.png"> Report</a></div>
+                          </div>
+             <div class="mentor">
+                     <div class="mentorheader">&nbsp;</div>
+                     <div class="msgH">
+                     <div style="padding:5px;">stop as soon as you hit level six.<br>
+<br>
+:)</div>
+                     </div>
+                 <div class="msgfooter">&nbsp;</div>
+             </div>
+
+             </td></tr>
+             <tr><td>&nbsp;</td></tr>
+                         <tr><td>
+
+             <div class="mentorname"><a href="http://www.prisonstruggle.com/viewgang.php?id=7499" title="[The Oracles]">[<span><span style="color:#FFFFFF">I</span><span style="color:#FFFFFF">W</span><span style="color:#FFFFFF">W</span></span><img src="./PS_ Mentor_files/xstar.png" width="6" style="vertical-align:top">]</a><b><a title="[Respected Prisoner]  [44 RP Days Left]" href="http://www.prisonstruggle.com/profiles.php?id=257515"><font color="darkred">Mephisto</font></a></b><br>
+                 <div class="timestamp">09/09/2016 16:36:25</div>
+                                     <div><a href="http://www.prisonstruggle.com/mentor.php?report=110856&amp;conversation="><img style="height:20px;" src="./PS_ Mentor_files/reportbi9.png"> Report</a></div>
+                          </div>
+             <div class="mentor">
+                     <div class="mentorheader">&nbsp;</div>
+                     <div class="msgH">
+                     <div style="padding:5px;">there are no stupid questions, just stupid answers.<br>
+just ask me if you need to know anything.  :)<br>
+tip #1.<br>
+decide whether you want to train strength/defense (recommended) or speed/strength. ignore the other stat for the moment.<br>
+tip #2.<br>
+best to start a school course straight away. just ask &amp; i will pay for your 1st one. just don't ask after being here just a few minutes. do the tutorial first at least.<br>
+tip #3.<br>
+don't go joining the 1st gang you get an invite to. you will get loads. ask me before you join. i will tell you straight if it is a good move or not.<br>
+you are looking for a gang with active long standing/'old' members &amp; would be willing to lend you GOOD gear &amp; a full pg set ideally.</div>
+                     </div>
+                 <div class="msgfooter">&nbsp;</div>
+             </div>
+
+             </td></tr>
+             <tr><td>&nbsp;</td></tr>
+                    </tbody></table>
+        	</td>
+</tr>
+<tr>
+	<td class="contenthead">Mentorship system</td>
+</tr>
+    <tr>
+	<td class="contentcontent">
+Your mentor must be available to stay in touch with you and try to help with any doubt or problem that comes up. As you grow strong and powerful, both you and your mentor will be rewarded:<br>
+- 2 Awake Pills for you and 2 for your mentor when you reach level 5.<br>
+- 5 Awake Pills when you reach level 10.<br>
+- 250 Points when you reach 5,000 total stats.<br>
+- 500 Points when you reach 150,000 total stats.<br>
+<br>
+You will cease being an apprentice once you've reached level 10 and 150,000 total stats.<br>
+To be a mentor you must be at least 30 days old and level 10, and have 150,000 or more total stats.<br>
+Your mentor may decide to stop mentoring you if you don't log in for 2 days or just quit the mentorship system altogether. In either case, you will automatically be assigned a new mentor.<br>
+
+    
+    </td>
+</tr>
+</tbody></table></td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+
+</tbody></table>
+<!-- Finish div: "Content Variable" -->
+<!-- Strart div: "Footer" -->
+<div id="footer">
+ | &nbsp;
+<a href="http://www.prisonstruggle.com/citizens.php">318,766 Total Prisoners</a>&nbsp; | &nbsp;
+<a href="http://www.prisonstruggle.com/online.php">26 Prisoners Online</a> &nbsp; | &nbsp;
+<a href="http://www.prisonstruggle.com/24hour.php">232 Prisoners Online (24 Hours)</a> &nbsp; |<br><br>
+This page was generated in 0.33 seconds<br><br>
+© Game Copyright 2007-2016 - prisonstruggle@gmail.com<div class="bottom"></div>
+</div>
+<!-- Finish div: "Footer" -->
+</div>
+<!-- Finish div: "Principal content" -->
+</div>
+<!-- Finish div: "Whole Container" -->
+</td>
+</tr>
+</tbody></table>
+
+
+</body></html>
