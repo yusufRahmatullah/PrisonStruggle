@@ -15,7 +15,8 @@ captcha_data = None
 is_run = False
 USERNAME = config["username"]
 PASSWORD = config["password"]
-SLEEP_TIME = 200
+SLEEP_TIME = config["sleep_time"]
+CYCLE_TIME = config["cycle_time"]
 
 def get_train_data():
 	global b
@@ -230,8 +231,8 @@ def bot_check_general():
 			b.quit()
 			for i in range(SLEEP_TIME, -1, -1):
 				time.sleep(1)
-			init()
-			login()
+			logout(True)
+			login_check()
 			
 		print '[Bot Check] Bot detected'
 		# get image text
@@ -275,11 +276,11 @@ def bot_check_general():
 				if bot == captcha_data[key]:
 					result.append(str(key))
 					break
-		print '[Bot Check] result:', result
 		if len(result) != 5:
 			b.save_screenshot('whole_bot.png')
 			return False
 		bot_text = ''.join(result)
+		print '[Bot Check] result:', bot_text
 
 		# get input and fill
 		inputs = b.find_elements_by_tag_name('input')
@@ -287,9 +288,9 @@ def bot_check_general():
 			try:
 				if -2 <= (i.size[0] - input_loc[0]) <= 2 and -2 <= (i.size[1] - input_loc[1]) <= 2:
 					i.send_keys(bot_text)
+					print '[Bot Check] get_input_fill found'
 					break
 			except Exception as e:
-				print '[Bot Check] get_input_fill:', e
 				pass
 
 		# get and click verify button
@@ -299,9 +300,9 @@ def bot_check_general():
 				if i.get_attribute('type') == 'submit':
 					if -2 <= (i.size[0] - btn_loc[0]) <= 2 and -2 <= (i.size[1] - btn_loc[1]) <= 2:
 						i.click()
+						print '[Bot Check] get_click_button found'
 						break
 			except Exception as e:
-				print '[Bot Check] get_click_button:', e
 				pass
 
 	return True
@@ -323,6 +324,8 @@ def failed_mug():
 				pass
 		if target != None:
 			target.click()
+			return true
+	return false
 
 def awake_check():
 	global b
@@ -336,15 +339,7 @@ def awake_check():
 					bar_text = re.findall('\d+', img.get_attribute('src'))
 					bar_value = int(bar_text[0])
 					if bar_value < 2:
-						print 'Logging out...'
-						b.get('http://www.prisonstruggle.com/index.php?action=logout')
-						print 'Start time in awake check'
-						for _i in range(10, 0, -1):
-							print 'cycle', _i
-							for i in range(SLEEP_TIME, -1, -1):
-								# print 'timer:', i
-								time.sleep(1)
-						print 'timer done in awake check'
+						logout(true)
 						login_check()
 					break
 			except Exception as e:
@@ -399,7 +394,7 @@ def money_check(threshold=5000):
 		if money >= threshold:
 			b.get('http://prisonstruggle.com/bank.php?dep=1')
 	except Exception as e:
-		print '[money_check]', e
+		# money not found or below 1K
 		pass
 
 def vote():
@@ -520,39 +515,36 @@ def shower_check():
 		b.get('http://www.prisonstruggle.com/crime.php')
 	except:
 		print 'Not in shower'
+
+def logout(isUseLongPause):
+	global b
+	
+	print 'Logging out...'
+	b.get('http://www.prisonstruggle.com/index.php?action=logout')
+	if isUseLongPause:
+		for _i in range(CYCLE_TIME, 0, -1):
+			print 'cycle', _i
+			for i in range(SLEEP_TIME, -1, -1):
+				time.sleep(1)
+	
 	
 def worker():
 	global b, is_run
 	
 	while is_run:
-		# bot_check()
-		print '[worker] call login check'
 		login_check()
-		print '[worker] call search_the_prison_yard_and_vote_check'
 		search_the_prison_yard_and_vote_check()
 		money_check()
-		print '[worker] call daily_visit_check'
 		daily_visit_check()
-		print '[worker] call money_check'
 		money_check()
-		print '[worker] call awake_check'
 		awake_check()
-		print '[worker] call gym'
 		gym()
-		print '[worker] call failed_mug'
-		failed_mug()
-		# print '[worker] call crime'
-		# crime()
-		print '[worker] start timer'
+		if failed_mug():
+			crime()
 		money_check()
 		for i in xrange(SLEEP_TIME, -1, -1):
 			if is_run:
-				# print 'timer:', i
 				time.sleep(1)
-		print '[worker] timer done'
-		#print '[worker] attack Kalynn'
-		#b.get('www.prisonstruggle.com/attack.php?attack=321252')
-	print '[worker] worker stopped'
 	
 if __name__ == '__main__':
 	init()
