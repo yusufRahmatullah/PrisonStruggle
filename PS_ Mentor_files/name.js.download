@@ -1,0 +1,50 @@
+
+function animate1(){
+	if (temp1==line1[nextline1] & temp1.length==line1[nextline1].length & nextline1!=lines)
+	{
+		nextline1++;
+		nextchar1=-1;
+		document.getElementById('subs1').innerHTML=temp1;
+		document.getElementById('subs1').style.color=colors[nextline1];
+		temp1="";
+		setTimeout("nextstep1()",1000)
+	}
+	else if (nextline1==lines & temp1==line1[nextline1] & temp1.length==line1[nextline1].length)
+	{
+		nextline1=1;
+		nextchar1=-1;
+		document.getElementById('subs1').innerHTML=temp1;
+		document.getElementById('subs1').style.color=colors[nextline1];
+		temp1="";
+		setTimeout("nextstep1()",1000)
+	}
+	else 
+	{
+		nextstep1()
+	}
+}
+	
+function nextstep1()
+{
+	if (cursor1=="\\")
+	{
+		cursor1="|"
+	}
+	else if (cursor1=="|")
+	{
+		cursor1="/"
+	}
+	else if (cursor1=="/")
+	{
+		cursor1="-"
+	}
+	else if (cursor1=="-")
+	{
+		cursor1="\\"
+	}
+	
+	nextchar1++;
+	temp1+=line1[nextline1].charAt(nextchar1);
+	document.getElementById('subs1').innerHTML=temp1+cursor1;
+	setTimeout("animate1()",25)
+}
