@@ -324,7 +324,7 @@ def failed_mug():
 				pass
 		if target != None:
 			target.click()
-			return true
+			return True
 	return false
 
 def awake_check():
