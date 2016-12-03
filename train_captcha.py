@@ -3,14 +3,19 @@ from PIL import Image
 import re
 import threading
 import time
+import json
+
+# read config
+with open('config.json', 'r') as f:
+	config = json.load(f)
 
 # global variable
 b = None
 captcha_data = None
 is_run = False
-USERNAME = 'yusufr'
-PASSWORD = 'Mungkin7;'
-must_attacked = 'http://www.prisonstruggle.com/profiles.php?id=322202'
+USERNAME = config["username"]
+PASSWORD = config["password"]
+SLEEP_TIME = 200
 
 def get_train_data():
 	global b
@@ -40,7 +45,11 @@ def get_captcha_text(name='login.png'):
 		captcha_data = {}
 		for i in range(10):
 			img = Image.open('data-{}.png'.format(i))
-			captcha_data[i] = list(img.getdata())
+			temp_data = list(img.getdata())
+			cap_data = []
+			for d in temp_data:
+				cap_data.append(d + (255,))
+			captcha_data[i] = cap_data
 	
 	img = Image.open(name)
 	result = []
@@ -77,8 +86,9 @@ def get_captcha_image(name='0.png'):
 def init():
 	global b
 	
-	b = wd.Chrome()
-	# b = wd.PhantomJS()
+	# b = wd.Chrome()
+	b = wd.PhantomJS()
+	#~ b.set_window_size()
 
 def login():
 	global b
@@ -106,6 +116,8 @@ def gym():
 	global b
 	
 	b.get('http://www.prisonstruggle.com/gym.php')
+	if not bot_check_general():
+		return
 	imgs = b.find_elements_by_tag_name('img')
 	for img in imgs:
 		try:
@@ -119,7 +131,8 @@ def gym():
 				else:
 					print 'Energy: {}/{}'.format(bar_value, max_bar_value)
 					break
-		except:
+		except Exception as e:
+			# print '[gym 1]', e
 			pass
 	buttons = b.find_elements_by_class_name('button')
 	# get stat
@@ -129,7 +142,8 @@ def gym():
 		try:
 			if td.get_attribute('width') == '35%':
 				stats.append(td)
-		except:
+		except Exception as e:
+			print '[gym 2]', e
 			pass
 	values = []
 	try:
@@ -150,7 +164,11 @@ def gym():
 		else:
 			print '[gym] train strength because strength not yet trained: {}'.format(values[0])
 			buttons[0].click()
-	except:
+	except Exception as e:
+		print '[gym 3]', e
+		print '[gym 3] n(values)', len(values)
+		print '[gym 3] n(buttons)', len(buttons)
+		print '[gym 3] stats', stats
 		pass
 
 def crime():
@@ -201,44 +219,66 @@ def search_the_prison_yard():
 	except:
 		pass
 
-def failed_mug():
-	global b
-
-	b.get('http://www.prisonstruggle.com/mugcontract.php?section=accepted')
+def bot_check_general():
+	global b, captcha_data
+	
+	# b.get('http://www.prisonstruggle.com/mugcontract.php?section=accepted')
 	if 'Bot Check' in b.page_source:
+		if 'Warning:' in b.page_source:
+			print '[Bot Check] Bot Detected by Advance'
+			b.save_screenshot('adv_bot_{}.png'.format(time.time()))
+			b.quit()
+			for i in range(SLEEP_TIME, -1, -1):
+				time.sleep(1)
+			init()
+			login()
+			
+		print '[Bot Check] Bot detected'
 		# get image text
-		LEFT = 480
+		LEFT = 489
 		TOP = 449
-		RIGHT = 481 + 44
-		BOTTOM = 449 + 10
+		RIGHT = LEFT + 44
+		BOTTOM = TOP + 10
 
-		input_loc = (480, 465)
-		btn_loc = (532, 465)
+		input_loc = (490, 473)
+		btn_loc = (544, 468)
 
 		if captcha_data == None:
 			captcha_data = {}
 			for i in range(10):
 				img = Image.open('data-{}.png'.format(i))
-				captcha_data[i] = list(img.getdata())
-
+				temp_data = list(img.getdata())
+				cap_data = []
+				for d in temp_data:
+					cap_data.append(d + (255,))
+				captcha_data[i] = cap_data
+		
 		b.save_screenshot('whole_bot.png')
 		img = Image.open('whole_bot.png')
+		# DEBUG
+		img.crop((LEFT, TOP, RIGHT, BOTTOM)).save('whole_bot_cropped.png')
+		img.crop((490, 473, 535, 486)).save('whole_bot_input.png')
+		img.crop((544, 468, 579, 490)).save('whole_bot_button.png')
 		result = []
 		for i in range(5):
-			lefts = i * LEFT + 1
-			right = left + 8
+			lefts = i * 9 + LEFT
+			right = lefts + 8
 			top = TOP
 			bottom = BOTTOM
-			im = img.crop((left, top, right, bottom))
+			im = img.crop((lefts, top, right, bottom))
 			for y in range(im.size[1]):
-				for y in range(im.size[0]):
-					if im.getpixel((x, y)) != (255, 255, 255):
-						im.putpixel((x, y), (0, 0, 0))
+				for x in range(im.size[0]):
+					if im.getpixel((x, y)) != (255, 255, 255, 255):
+						im.putpixel((x, y), (0, 0, 0, 255))
 			bot = list(im.getdata())
 			for key in captcha_data.iterkeys():
 				if bot == captcha_data[key]:
 					result.append(str(key))
 					break
+		print '[Bot Check] result:', result
+		if len(result) != 5:
+			b.save_screenshot('whole_bot.png')
+			return False
 		bot_text = ''.join(result)
 
 		# get input and fill
@@ -248,7 +288,8 @@ def failed_mug():
 				if -2 <= (i.size[0] - input_loc[0]) <= 2 and -2 <= (i.size[1] - input_loc[1]) <= 2:
 					i.send_keys(bot_text)
 					break
-			except:
+			except Exception as e:
+				print '[Bot Check] get_input_fill:', e
 				pass
 
 		# get and click verify button
@@ -259,12 +300,17 @@ def failed_mug():
 					if -2 <= (i.size[0] - btn_loc[0]) <= 2 and -2 <= (i.size[1] - btn_loc[1]) <= 2:
 						i.click()
 						break
-			except:
+			except Exception as e:
+				print '[Bot Check] get_click_button:', e
 				pass
 
-		# call failed_mug again
-		failed_mug()
-	else:
+	return True
+
+def failed_mug():
+	global b
+
+	b.get('http://www.prisonstruggle.com/mugcontract.php?section=accepted')
+	if bot_check_general():
 		imgs = b.find_elements_by_tag_name('img')
 		target = None
 		for img in imgs:
@@ -290,10 +336,14 @@ def awake_check():
 					bar_text = re.findall('\d+', img.get_attribute('src'))
 					bar_value = int(bar_text[0])
 					if bar_value < 2:
-						print 'start timer in awake check'
-						for i in range(300, -1, -1):
-							# print 'timer:', i
-							time.sleep(1)
+						print 'Logging out...'
+						b.get('http://www.prisonstruggle.com/index.php?action=logout')
+						print 'Start time in awake check'
+						for _i in range(10, 0, -1):
+							print 'cycle', _i
+							for i in range(SLEEP_TIME, -1, -1):
+								# print 'timer:', i
+								time.sleep(1)
 						print 'timer done in awake check'
 						login_check()
 					break
@@ -345,6 +395,7 @@ def money_check(threshold=5000):
 		temp = re.findall('\$\s+\d+\,?\d+', b.page_source)
 		money_string = re.split('\s+', temp[0])[1]
 		money = int(re.sub(',', '', money_string))
+		print '[money_check]money: {}'.format(money)
 		if money >= threshold:
 			b.get('http://prisonstruggle.com/bank.php?dep=1')
 	except Exception as e:
@@ -479,6 +530,7 @@ def worker():
 		login_check()
 		print '[worker] call search_the_prison_yard_and_vote_check'
 		search_the_prison_yard_and_vote_check()
+		money_check()
 		print '[worker] call daily_visit_check'
 		daily_visit_check()
 		print '[worker] call money_check'
@@ -492,18 +544,21 @@ def worker():
 		# print '[worker] call crime'
 		# crime()
 		print '[worker] start timer'
-		for i in xrange(300, -1, -1):
+		money_check()
+		for i in xrange(SLEEP_TIME, -1, -1):
 			if is_run:
 				# print 'timer:', i
 				time.sleep(1)
 		print '[worker] timer done'
+		#print '[worker] attack Kalynn'
+		#b.get('www.prisonstruggle.com/attack.php?attack=321252')
 	print '[worker] worker stopped'
 	
 if __name__ == '__main__':
 	init()
 	login()
 	is_run = True
-	w1 = threading.Thread(target=worker, name='worker')
-	w1.daemon = True
-	w1.start()
-	
+	worker()
+	#w1 = threading.Thread(target=worker, name='worker')
+	#w1.daemon = True
+	#w1.start()
