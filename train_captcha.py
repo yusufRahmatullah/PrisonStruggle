@@ -339,7 +339,7 @@ def awake_check():
 					bar_text = re.findall('\d+', img.get_attribute('src'))
 					bar_value = int(bar_text[0])
 					if bar_value < 2:
-						logout(true)
+						logout(True)
 						login_check()
 					break
 			except Exception as e:

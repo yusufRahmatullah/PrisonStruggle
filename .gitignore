@@ -95,3 +95,7 @@ config.json
 *.png
 *.jpg
 *.bmp
+
+# log file
+*.log
+
