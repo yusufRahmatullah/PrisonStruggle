@@ -326,7 +326,7 @@ def failed_mug():
 		if target != None:
 			target.click()
 			return True
-	return false
+	return False
 
 def awake_check():
 	global b
