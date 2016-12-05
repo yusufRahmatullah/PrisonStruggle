@@ -176,7 +176,8 @@ def crime():
 	global b
 	
 	b.get('http://www.prisonstruggle.com/crime.php')
-	while True and not bot_check_alert():
+	# while True and not bot_check_alert():
+	while True:
 		try:
 			# get max crime
 			btns = b.find_elements_by_class_name('advBtn')
