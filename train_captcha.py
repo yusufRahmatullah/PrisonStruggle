@@ -229,10 +229,9 @@ def bot_check_general():
 		if 'Warning:' in b.page_source:
 			print '[Bot Check] Bot Detected by Advance'
 			b.save_screenshot('adv_bot_{}.png'.format(time.time()))
-			b.quit()
+			logout(True)
 			for i in range(SLEEP_TIME, -1, -1):
 				time.sleep(1)
-			logout(True)
 			login_check()
 			
 		print '[Bot Check] Bot detected'
