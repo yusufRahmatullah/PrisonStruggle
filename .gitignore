@@ -98,4 +98,4 @@ config.json
 
 # log file
 *.log
-
+log.txt
