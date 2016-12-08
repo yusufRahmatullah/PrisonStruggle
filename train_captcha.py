@@ -119,8 +119,7 @@ def gym():
 	global b
 	
 	b.get('http://www.prisonstruggle.com/gym.php')
-	if not bot_check_general():
-		return
+	bot_check_general()
 	imgs = b.find_elements_by_tag_name('img')
 	for img in imgs:
 		try:
@@ -171,6 +170,7 @@ def gym():
 			print '[gym] train strength because strength not yet trained: {}'.format(values[0])
 			buttons[0].click()
 	except Exception as e:
+		print ('[gym] err: {}'.format(e))
 		pass
 	
 def crime():
@@ -313,26 +313,26 @@ def bot_check_general():
 def failed_mug():
 	global b
 	
-	retval = bot_check_general()
-	print ('[failed_mug] retval:{}'.format(retval))
-	if bot_check_general():
-		b.get('http://www.prisonstuggle.com/mugcontract.php?section=accepted')
-		imgs = b.find_elements_by_tag_name('img')
-		target = None
-		for img in imgs:
-			try:
-				if 'mug.png' in img.get_attribute('src'):
-					target = img
-					break
-			except Exception as e:
-				print '[failed_mug] ', e
-				pass
-		if target != None:
-			target.click()
-			return True
-		else:
-			print('[failed_mug] no contract')
-	return False
+	bot_check_general()
+
+	b.get('http://www.prisonstuggle.com/mugcontract.php?section=accepted')
+	imgs = b.find_elements_by_tag_name('img')
+	target = None
+	for img in imgs:
+		try:
+			if 'mug.png' in img.get_attribute('src'):
+				target = img
+				break
+		except Exception as e:
+			print '[failed_mug] ', e
+			pass
+	if target != None:
+		target.click()
+		print('[failed_mug] do failed mugging')
+		return True
+	else:
+		print('[failed_mug] no contract')
+		return False
 
 def awake_check():
 	global b
@@ -521,7 +521,8 @@ def shower_check():
 				time.sleep(1)
 		b.get('http://www.prisonstruggle.com/crime.php')
 	except:
-		print 'Not in shower'
+		pass
+		# print 'Not in shower'
 
 def logout(isUseLongPause):
 	global b
