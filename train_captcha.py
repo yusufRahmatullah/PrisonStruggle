@@ -104,6 +104,8 @@ def login():
 		login()
 	inputs = b.find_elements_by_tag_name('input')
 	for input in inputs:
+
+
 		if input.get_attribute('name') == 'captcha':
 			input.send_keys(captcha)
 			break
@@ -180,7 +182,7 @@ def crime():
 		try:
 			# get max crime
 			btns = b.find_elements_by_class_name('advBtn')
-			print '[crime]len(btns):', len(btns)
+			# print '[crime]len(btns):', len(btns)
 			if btns==None:
 				break
 			av_crimes = []
@@ -189,17 +191,19 @@ def crime():
 					if 'tick' in btn.get_attribute('src'):
 						av_crimes.append(btn)
 				except Exception as e:
-					print '[crime in]', e
+					# print '[crime in]', e
 					pass
-			print '[crime]len(av_crimes):', len(av_crimes)
+			# print '[crime]len(av_crimes):', len(av_crimes)
 			if len(av_crimes) == 0:
 				break
-			half = len(av_crimes)/2 - 1
-			print '[crime]half:', half
-			if half < 0:
-				half = 0
-			av_crimes[half].click()	
+			# half = len(av_crimes)/2 - 1
+			# print '[crime]half:', half
+			# if half < 0:
+			#	half = 0
+			# av_crimes[half].click()
+			av_crimes[-1].click()
 			shower_check()
+			break
 		except Exception as e:
 			print '[crime out]', e
 			pass
@@ -223,7 +227,7 @@ def search_the_prison_yard():
 def bot_check_general():
 	global b, captcha_data
 	
-	# b.get('http://www.prisonstruggle.com/mugcontract.php?section=accepted')
+	b.get('http://www.prisonstruggle.com/mugcontract.php?section=accepted')
 	if 'Bot Check' in b.page_source:
 		if 'Warning:' in b.page_source:
 			print '[Bot Check] Bot Detected by Advance'
@@ -308,9 +312,11 @@ def bot_check_general():
 
 def failed_mug():
 	global b
-
-	b.get('http://www.prisonstruggle.com/mugcontract.php?section=accepted')
+	
+	retval = bot_check_general()
+	print ('[failed_mug] retval:{}'.format(retval))
 	if bot_check_general():
+		b.get('http://www.prisonstuggle.com/mugcontract.php?section=accepted')
 		imgs = b.find_elements_by_tag_name('img')
 		target = None
 		for img in imgs:
