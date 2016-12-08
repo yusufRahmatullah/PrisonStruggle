@@ -87,6 +87,7 @@ def get_captcha_image(name='0.png'):
 def init():
 	global b
 	
+	# b = wd.Firefox()
 	# b = wd.Chrome()
 	b = wd.PhantomJS()
 	b.set_window_size(1366, 768)
@@ -118,95 +119,85 @@ def login():
 def gym():
 	global b
 	
-	b.get('http://www.prisonstruggle.com/gym.php')
 	bot_check_general()
-	imgs = b.find_elements_by_tag_name('img')
-	for img in imgs:
-		try:
-			if 'Energy' in img.get_attribute('onmouseover'):
-				bar_text = re.findall('\d+', img.get_attribute('onmouseover'))
-				bar_value = int(bar_text[0])
-				max_bar_value = int(bar_text[1])
-				if bar_value != max_bar_value:
-					print 'energy not in max condition: {}/{}'.format(bar_value, max_bar_value)
-					return
-				else:
-					print 'Energy: {}/{}'.format(bar_value, max_bar_value)
-					break
-		except Exception as e:
-			# print '[gym 1]', e
-			pass
-	buttons = b.find_elements_by_class_name('button')
-	# get stat
-	stats = []
-	tds = b.find_elements_by_tag_name('td')
-	for td in tds:
-		try:
-			if td.get_attribute('width') == '35%':
-				stats.append(td)
-		except Exception as e:
-			# print '[gym 2]', e
-			pass
-	values = []
-	for stat in stats:
-		try:
-			temp = re.findall('[\d\,]+', stat.text)
-			if ',' in temp[0]:
-				_temp = temp[0].replace(',', '')
-			else:
-				_temp = temp[0]
-			values.append(int(_temp))
-		except Exception as e:
-			pass
+	b.get('http://www.prisonstruggle.com/gym.php')
 	try:
-		buttons = b.find_elements_by_class_name('button')
-		if values[0]/values[1] >= 3:	# ratio of strength and defend
-			print '[gym] train defend because defend is too small: {} << {}'.format(values[1], values[0])
-			buttons[1].click()
-		elif values[0] > values[2]:	# strength more than speed:
-			print '[gym] train speed because speed less than strength: {} < {}'.format(values[2], values[0])
-			buttons[2].click()
+		_temp = b.find_element_by_xpath("//div[@id='sidebar']/div[@id='profile']/div[@class='bottom-information']/img[2]").get_attribute('onmouseover')
+		_temp = re.findall('\d+', _temp)
+		_val = int(_temp[0])
+		_max = int(_temp[1])
+		
+		if _val != _max:
+			print '[gym] energy:{}'.format(_val) 
+			return
+		
+		str_text = b.find_element_by_xpath("//td[@class='contentcontent']/table/tbody/tr[1]/td[2]").text
+		str_temp = re.findall('[\d\,]+', str_text)[0]
+		if ',' in str_temp:
+			_str = int(re.sub(',', '', str_temp))
 		else:
-			print '[gym] train strength because strength not yet trained: {}'.format(values[0])
-			buttons[0].click()
+			_str = int(str_temp)
+		spd_text = b.find_element_by_xpath("//td[@class='contentcontent']/table/tbody/tr[2]/td[2]").text
+		spd_temp = re.findall('[\d\,]+', spd_text)[0]
+		if ',' in spd_temp:
+			_spd = int(re.sub(',', '', spd_temp))
+		else:
+			_spd = int(spd_temp)
+		
+		str_btn = b.find_element_by_xpath("//input[@class='button'][@name='gts']")
+		spd_btn = b.find_element_by_xpath("//input[@class='button'][@name='gtd']")
+		
+		if _str > _spd:
+			spd_btn.click()
+			print '[gym] train speed'
+		else:
+			str_btn.click()
+			print '[gym] train strength'
 	except Exception as e:
-		print ('[gym] err: {}'.format(e))
-		pass
+		print('[gym new] err:{}'.format(e))
 	
 def crime():
 	global b
 	
 	b.get('http://www.prisonstruggle.com/crime.php')
-	# while True and not bot_check_alert():
-	while True:
-		try:
-			# get max crime
-			btns = b.find_elements_by_class_name('advBtn')
-			# print '[crime]len(btns):', len(btns)
-			if btns==None:
-				break
-			av_crimes = []
-			for btn in btns:
-				try:
-					if 'tick' in btn.get_attribute('src'):
-						av_crimes.append(btn)
-				except Exception as e:
-					# print '[crime in]', e
-					pass
-			# print '[crime]len(av_crimes):', len(av_crimes)
-			if len(av_crimes) == 0:
-				break
-			# half = len(av_crimes)/2 - 1
-			# print '[crime]half:', half
-			# if half < 0:
-			#	half = 0
-			# av_crimes[half].click()
-			av_crimes[-1].click()
+	try:
+		buttons = b.find_elements_by_xpath('//input[@class="advBtn"][@src="images/buttons/tick.png"]')
+		if len(buttons) > 0:
+			buttons[-1].click()
+			print('[crime] do crime at {}'.format(len(buttons)))
 			shower_check()
-			break
-		except Exception as e:
-			print '[crime out]', e
-			pass
+	except Exception as e:
+		print('[crime] err: {}'.format(e))
+	# while True and not bot_check_alert():
+	# while True:
+		# try:
+			# # get max crime
+			# btns = b.find_elements_by_class_name('advBtn')
+			# # print '[crime]len(btns):', len(btns)
+			# if btns==None:
+				# break
+			# av_crimes = []
+			# for btn in btns:
+				# try:
+					# if 'tick' in btn.get_attribute('src'):
+						# av_crimes.append(btn)
+				# except Exception as e:
+					# # print '[crime in]', e
+					# pass
+			# # print '[crime]len(av_crimes):', len(av_crimes)
+			# if len(av_crimes) == 0:
+				# break
+			# # half = len(av_crimes)/2 - 1
+			# # print '[crime]half:', half
+			# # if half < 0:
+			# #	half = 0
+			# # av_crimes[half].click()
+			# av_crimes[-1].click()
+			# shower_check()
+			# break
+		# except Exception as e:
+			# print '[crime out]', e
+			# pass
 
 def search_the_prison_yard():
 	global b
@@ -227,7 +218,7 @@ def search_the_prison_yard():
 def bot_check_general():
 	global b, captcha_data
 	
-	b.get('http://www.prisonstruggle.com/mugcontract.php?section=accepted')
+	# b.get('http://www.prisonstruggle.com/mugcontract.php?section=accepted')
 	if 'Bot Check' in b.page_source:
 		if 'Warning:' in b.page_source:
 			print '[Bot Check] Bot Detected by Advance'
@@ -314,7 +305,6 @@ def failed_mug():
 	global b
 	
 	bot_check_general()
-
 	b.get('http://www.prisonstuggle.com/mugcontract.php?section=accepted')
 	imgs = b.find_elements_by_tag_name('img')
 	target = None
@@ -390,18 +380,15 @@ def search_the_prison_yard_and_vote_check():
 	except:
 		pass
 
-def money_check(threshold=5000):
+def money_check():
 	global b
 	
 	try:
 		temp = re.findall('\$\s+\d+\,?\d+', b.page_source)
 		money_string = re.split('\s+', temp[0])[1]
 		money = int(re.sub(',', '', money_string))
-		print '[money_check]money: {}'.format(money)
-		if money >= threshold:
-			b.get('http://prisonstruggle.com/bank.php?dep=1')
+		b.get('http://prisonstruggle.com/bank.php?dep=1')
 	except Exception as e:
-		# money not found or below 1K
 		pass
 
 def vote():
@@ -547,7 +534,7 @@ def worker():
 		money_check()
 		awake_check()
 		gym()
-		if failed_mug():
+		if not failed_mug():
 			crime()
 		money_check()
 		for i in xrange(SLEEP_TIME, -1, -1):
