@@ -144,17 +144,20 @@ def gym():
 			if td.get_attribute('width') == '35%':
 				stats.append(td)
 		except Exception as e:
-			print '[gym 2]', e
+			# print '[gym 2]', e
 			pass
 	values = []
-	try:
-		for stat in stats:
+	for stat in stats:
+		try:
 			temp = re.findall('[\d\,]+', stat.text)
 			if ',' in temp[0]:
 				_temp = temp[0].replace(',', '')
 			else:
 				_temp = temp[0]
 			values.append(int(_temp))
+		except Exception as e:
+			pass
+	try:
 		buttons = b.find_elements_by_class_name('button')
 		if values[0]/values[1] >= 3:	# ratio of strength and defend
 			print '[gym] train defend because defend is too small: {} << {}'.format(values[1], values[0])
@@ -166,12 +169,8 @@ def gym():
 			print '[gym] train strength because strength not yet trained: {}'.format(values[0])
 			buttons[0].click()
 	except Exception as e:
-		print '[gym 3]', e
-		print '[gym 3] n(values)', len(values)
-		print '[gym 3] n(buttons)', len(buttons)
-		print '[gym 3] stats', stats
 		pass
-
+	
 def crime():
 	global b
 	
@@ -233,6 +232,7 @@ def bot_check_general():
 			for i in range(SLEEP_TIME, -1, -1):
 				time.sleep(1)
 			login_check()
+			return True
 			
 		print '[Bot Check] Bot detected'
 		# get image text
@@ -304,7 +304,6 @@ def bot_check_general():
 						break
 			except Exception as e:
 				pass
-
 	return True
 
 def failed_mug():
@@ -325,6 +324,8 @@ def failed_mug():
 		if target != None:
 			target.click()
 			return True
+		else:
+			print('[failed_mug] no contract')
 	return False
 
 def awake_check():
