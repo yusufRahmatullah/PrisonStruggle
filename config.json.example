@@ -1,6 +1,6 @@
 {
 	"username" : "YourUserName",
-	"password" : "YourPassword".
+	"password" : "YourPassword",
 	"cycle_time" : 20,
 	"sleep_time" : 200
 }

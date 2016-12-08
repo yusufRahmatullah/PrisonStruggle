@@ -89,7 +89,7 @@ def init():
 	
 	# b = wd.Chrome()
 	b = wd.PhantomJS()
-	#~ b.set_window_size()
+	b.set_window_size(1366, 768)
 
 def login():
 	global b
