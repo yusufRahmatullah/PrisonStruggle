@@ -18,6 +18,7 @@ PASSWORD = config["password"]
 SLEEP_TIME = config["sleep_time"]
 CYCLE_TIME = config["cycle_time"]
 
+#region image data capture
 def get_train_data():
 	global b
 	
@@ -84,137 +85,9 @@ def get_captcha_image(name='0.png'):
 			im = img.crop((left, top, right, bottom))
 			im.save(name)
 	
-def init():
-	global b
-	
-	# b = wd.Firefox()
-	# b = wd.Chrome()
-	b = wd.PhantomJS()
-	b.set_window_size(1366, 768)
+#endregion
 
-def login():
-	global b
-	
-	b.get('http://www.prisonstruggle.com')
-	b.find_element_by_id('username').send_keys(USERNAME)
-	b.find_element_by_id('password').send_keys(PASSWORD)
-	get_captcha_image(name='login.png')
-	captcha = get_captcha_text()
-	print 'captcha:', captcha
-	if len(captcha) != 5:
-		login()
-	inputs = b.find_elements_by_tag_name('input')
-	for input in inputs:
-
-
-		if input.get_attribute('name') == 'captcha':
-			input.send_keys(captcha)
-			break
-	for input in inputs:
-		if input.get_attribute('name') == 'submit':
-			input.click()
-			break
-	login_check()
-
-def gym():
-	global b
-	
-	bot_check_general()
-	b.get('http://www.prisonstruggle.com/gym.php')
-	try:
-		_temp = b.find_element_by_xpath("//div[@id='sidebar']/div[@id='profile']/div[@class='bottom-information']/img[2]").get_attribute('onmouseover')
-		_temp = re.findall('\d+', _temp)
-		_val = int(_temp[0])
-		_max = int(_temp[1])
-		
-		if _val != _max:
-			print '[gym] energy:{}'.format(_val) 
-			return
-		
-		str_text = b.find_element_by_xpath("//td[@class='contentcontent']/table/tbody/tr[1]/td[2]").text
-		str_temp = re.findall('[\d\,]+', str_text)[0]
-		if ',' in str_temp:
-			_str = int(re.sub(',', '', str_temp))
-		else:
-			_str = int(str_temp)
-		spd_text = b.find_element_by_xpath("//td[@class='contentcontent']/table/tbody/tr[2]/td[2]").text
-		spd_temp = re.findall('[\d\,]+', spd_text)[0]
-		if ',' in spd_temp:
-			_spd = int(re.sub(',', '', spd_temp))
-		else:
-			_spd = int(spd_temp)
-		
-		str_btn = b.find_element_by_xpath("//input[@class='button'][@name='gts']")
-		spd_btn = b.find_element_by_xpath("//input[@class='button'][@name='gtd']")
-		
-		if _str > _spd:
-			spd_btn.click()
-			print '[gym] train speed'
-		else:
-			str_btn.click()
-			print '[gym] train strength'
-	except Exception as e:
-		print('[gym new] err:{}'.format(e))
-	
-def crime():
-	global b
-	
-	b.get('http://www.prisonstruggle.com/crime.php')
-	try:
-		buttons = b.find_elements_by_xpath('//input[@class="advBtn"][@src="images/buttons/tick.png"]')
-		if len(buttons) > 0:
-			buttons[-1].click()
-			print('[crime] do crime at {}'.format(len(buttons)))
-			shower_check()
-	except Exception as e:
-		print('[crime] err: {}'.format(e))
-	# while True and not bot_check_alert():
-	# while True:
-		# try:
-			# # get max crime
-			# btns = b.find_elements_by_class_name('advBtn')
-			# # print '[crime]len(btns):', len(btns)
-			# if btns==None:
-				# break
-			# av_crimes = []
-			# for btn in btns:
-				# try:
-					# if 'tick' in btn.get_attribute('src'):
-						# av_crimes.append(btn)
-				# except Exception as e:
-					# # print '[crime in]', e
-					# pass
-			# # print '[crime]len(av_crimes):', len(av_crimes)
-			# if len(av_crimes) == 0:
-				# break
-			# # half = len(av_crimes)/2 - 1
-			# # print '[crime]half:', half
-			# # if half < 0:
-			# #	half = 0
-			# # av_crimes[half].click()
-			# av_crimes[-1].click()
-			# shower_check()
-			# break
-		# except Exception as e:
-			# print '[crime out]', e
-			# pass
-
-def search_the_prison_yard():
-	global b
-	
-	try:
-		b.get('http://www.prisonstruggle.com/downtown.php')
-		# imgs = b.find_elements_by_tag_name('img')
-		# found = False
-		# for img in imgs:
-			# if 'delete' in img.get_attribute('src'):
-				# found = True
-				# break
-		# if not found:
-			# pass	# do search in prison yard
-	except:
-		pass
-
+#region bot check
 def bot_check_general():
 	global b, captcha_data
 	
@@ -301,124 +174,6 @@ def bot_check_general():
 				pass
 	return True
 
-def failed_mug():
-	global b
-	
-	bot_check_general()
-	b.get('http://www.prisonstuggle.com/mugcontract.php?section=accepted')
-	imgs = b.find_elements_by_tag_name('img')
-	target = None
-	for img in imgs:
-		try:
-			if 'mug.png' in img.get_attribute('src'):
-				target = img
-				break
-		except Exception as e:
-			print '[failed_mug] ', e
-			pass
-	if target != None:
-		target.click()
-		print('[failed_mug] do failed mugging')
-		return True
-	else:
-		print('[failed_mug] no contract')
-		return False
-
-def awake_check():
-	global b
-	
-	try:
-		b.get('http://www.prisonstruggle.com/gym.php')
-		imgs = b.find_elements_by_tag_name('img')
-		for img in imgs:
-			try:
-				if 'Awake' in img.get_attribute('onmouseover'):
-					bar_text = re.findall('\d+', img.get_attribute('src'))
-					bar_value = int(bar_text[0])
-					if bar_value < 2:
-						logout(True)
-						login_check()
-					break
-			except Exception as e:
-				# print '[awake_check in]', e
-				pass
-	except Exception as e:
-		# print '[awake_check out]', e
-		pass
-		
-def login_check():
-	global b
-	
-	try:
-		b.get('http://www.prisonstruggle.com/crime.php')
-		if 'home.php' in b.page_source:
-			login()
-	except:
-		pass
-
-def daily_visit_check():
-	global b
-	
-	try:
-		if '<span style="color:#8b0000;">Daily Visits</span>' in b.page_source:
-			b.get('http://prisonstruggle.com/dailyvisits.php')
-		else:
-			pass
-		# if '<span href="dailyvisits.php">Daily Visits</span>' in b.page_source:
-			# pass	# do something
-	except:
-		pass
-
-def search_the_prison_yard_and_vote_check():
-	global b
-	
-	try:
-		if '<span style="color:darkred;">Search the Prison Yard</span>' in b.page_source:
-			search_the_prison_yard()
-			vote()
-			b.get('http://prisonstruggle.com/gym.php')
-	except:
-		pass
-
-def money_check():
-	global b
-	
-	try:
-		temp = re.findall('\$\s+\d+\,?\d+', b.page_source)
-		money_string = re.split('\s+', temp[0])[1]
-		money = int(re.sub(',', '', money_string))
-		b.get('http://prisonstruggle.com/bank.php?dep=1')
-	except Exception as e:
-		pass
-
-def vote():
-	global b
-	
-	# vote in top web games
-	b.get('http://www.prisonstruggle.com/vote.php?on=9')
-	try:
-		b.find_element_by_id('bVote').click()
-	except:
-		pass
-	
-	# vote in apex web gaming
-	b.get('http://www.prisonstruggle.com/vote.php?on=5')
-	try:
-		spans = b.find_elements_by_tag_name('span')
-		for span in spans:
-			if 'Vote For Prison Struggle' == span.text:
-				span.click()
-				break
-	except:
-		pass
-	
-	# vote the other, just visiting
-	b.get('http://www.prisonstruggle.com/vote.php?on=7')
-	b.get('http://www.prisonstruggle.com/vote.php?on=1')
-	b.get('http://www.prisonstruggle.com/vote.php?on=3')
-	b.get('http://www.prisonstruggle.com/vote.php?on=6')
-	b.get('http://www.prisonstruggle.com/vote.php?on=8')
-
 def bot_check_alert():
 	global b
 	from selenium.webdriver.support.ui import WebDriverWait as WDW
@@ -496,6 +251,212 @@ def bot_check_alert():
 		print 'no alert'
 		return False
 
+
+#endregion 
+
+#region main function
+def awake_check():
+	global b
+	
+	try:
+		b.get('http://www.prisonstruggle.com/gym.php')
+		imgs = b.find_elements_by_tag_name('img')
+		for img in imgs:
+			try:
+				if 'Awake' in img.get_attribute('onmouseover'):
+					bar_text = re.findall('\d+', img.get_attribute('src'))
+					bar_value = int(bar_text[0])
+					if bar_value < 2:
+						logout(True)
+						login_check()
+					break
+			except Exception as e:
+				# print '[awake_check in]', e
+				pass
+	except Exception as e:
+		# print '[awake_check out]', e
+		pass
+
+def crime():
+	global b
+	
+	b.get('http://www.prisonstruggle.com/crime.php')
+	try:
+		buttons = b.find_elements_by_xpath('//input[@class="advBtn"][@src="images/buttons/tick.png"]')
+		if len(buttons) > 0:
+			buttons[-1].click()
+			print('[crime] do crime at {}'.format(len(buttons)))
+			shower_check()
+	except Exception as e:
+		print('[crime] err: {}'.format(e))
+
+def daily_visit_check():
+	global b
+	
+	try:
+		if '<span style="color:#8b0000;">Daily Visits</span>' in b.page_source:
+			b.get('http://prisonstruggle.com/dailyvisits.php')
+		else:
+			pass
+		# if '<span href="dailyvisits.php">Daily Visits</span>' in b.page_source:
+			# pass	# do something
+	except:
+		pass
+
+def failed_mug():
+	global b
+	
+	bot_check_general()
+	b.get('http://www.prisonstuggle.com/mugcontract.php?section=accepted')
+	imgs = b.find_elements_by_tag_name('img')
+	target = None
+	for img in imgs:
+		try:
+			if 'mug.png' in img.get_attribute('src'):
+				target = img
+				break
+		except Exception as e:
+			print '[failed_mug] ', e
+			pass
+	if target != None:
+		target.click()
+		print('[failed_mug] do failed mugging')
+		return True
+	else:
+		print('[failed_mug] no contract')
+		return False
+
+def gym():
+	global b
+	
+	bot_check_general()
+	b.get('http://www.prisonstruggle.com/gym.php')
+	try:
+		_temp = b.find_element_by_xpath("//div[@id='sidebar']/div[@id='profile']/div[@class='bottom-information']/img[2]").get_attribute('onmouseover')
+		_temp = re.findall('\d+', _temp)
+		_val = int(_temp[0])
+		_max = int(_temp[1])
+		
+		if _val != _max:
+			print '[gym] energy:{}'.format(_val) 
+			return
+		
+		str_text = b.find_element_by_xpath("//td[@class='contentcontent']/table/tbody/tr[1]/td[2]").text
+		str_temp = re.findall('[\d\,]+', str_text)[0]
+		if ',' in str_temp:
+			_str = int(re.sub(',', '', str_temp))
+		else:
+			_str = int(str_temp)
+		spd_text = b.find_element_by_xpath("//td[@class='contentcontent']/table/tbody/tr[2]/td[2]").text
+		spd_temp = re.findall('[\d\,]+', spd_text)[0]
+		if ',' in spd_temp:
+			_spd = int(re.sub(',', '', spd_temp))
+		else:
+			_spd = int(spd_temp)
+		
+		str_btn = b.find_element_by_xpath("//input[@class='button'][@name='gts']")
+		spd_btn = b.find_element_by_xpath("//input[@class='button'][@name='gtd']")
+		
+		if _str > _spd:
+			spd_btn.click()
+			print '[gym] train speed'
+		else:
+			str_btn.click()
+			print '[gym] train strength'
+	except Exception as e:
+		print('[gym new] err:{}'.format(e))
+
+def init():
+	global b
+	
+	# b = wd.Firefox()
+	# b = wd.Chrome()
+	b = wd.PhantomJS()
+	b.set_window_size(1366, 768)
+
+def login():
+	global b
+	
+	b.get('http://www.prisonstruggle.com')
+	b.find_element_by_id('username').send_keys(USERNAME)
+	b.find_element_by_id('password').send_keys(PASSWORD)
+	get_captcha_image(name='login.png')
+	captcha = get_captcha_text()
+	print 'captcha:', captcha
+	if len(captcha) != 5:
+		login()
+	inputs = b.find_elements_by_tag_name('input')
+	for input in inputs:
+
+
+		if input.get_attribute('name') == 'captcha':
+			input.send_keys(captcha)
+			break
+	for input in inputs:
+		if input.get_attribute('name') == 'submit':
+			input.click()
+			break
+	login_check()
+	
+def login_check():
+	global b
+	
+	try:
+		b.get('http://www.prisonstruggle.com/crime.php')
+		if 'home.php' in b.page_source:
+			login()
+	except:
+		pass
+
+def logout(isUseLongPause):
+	global b
+	
+	print 'Logging out...'
+	b.get('http://www.prisonstruggle.com/index.php?action=logout')
+	if isUseLongPause:
+		for _i in range(CYCLE_TIME, 0, -1):
+			print 'cycle', _i
+			for i in range(SLEEP_TIME, -1, -1):
+				time.sleep(1)
+
+def money_check():
+	global b
+	
+	try:
+		temp = re.findall('\$\s+\d+\,?\d+', b.page_source)
+		money_string = re.split('\s+', temp[0])[1]
+		money = int(re.sub(',', '', money_string))
+		b.get('http://prisonstruggle.com/bank.php?dep=1')
+	except Exception as e:
+		pass
+		
+def search_the_prison_yard():
+	global b
+	
+	try:
+		b.get('http://www.prisonstruggle.com/downtown.php')
+		# imgs = b.find_elements_by_tag_name('img')
+		# found = False
+		# for img in imgs:
+			# if 'delete' in img.get_attribute('src'):
+				# found = True
+				# break
+		# if not found:
+			# pass	# do search in prison yard
+	except:
+		pass
+
+def search_the_prison_yard_and_vote_check():
+	global b
+	
+	try:
+		if '<span style="color:darkred;">Search the Prison Yard</span>' in b.page_source:
+			search_the_prison_yard()
+			vote()
+			b.get('http://prisonstruggle.com/gym.php')
+	except:
+		pass
+
 def shower_check():
 	global b, is_run
 	
@@ -509,20 +470,35 @@ def shower_check():
 		b.get('http://www.prisonstruggle.com/crime.php')
 	except:
 		pass
-		# print 'Not in shower'
 
-def logout(isUseLongPause):
+def vote():
 	global b
 	
-	print 'Logging out...'
-	b.get('http://www.prisonstruggle.com/index.php?action=logout')
-	if isUseLongPause:
-		for _i in range(CYCLE_TIME, 0, -1):
-			print 'cycle', _i
-			for i in range(SLEEP_TIME, -1, -1):
-				time.sleep(1)
+	# vote in top web games
+	b.get('http://www.prisonstruggle.com/vote.php?on=9')
+	try:
+		b.find_element_by_id('bVote').click()
+	except:
+		pass
 	
+	# vote in apex web gaming
+	b.get('http://www.prisonstruggle.com/vote.php?on=5')
+	try:
+		spans = b.find_elements_by_tag_name('span')
+		for span in spans:
+			if 'Vote For Prison Struggle' == span.text:
+				span.click()
+				break
+	except:
+		pass
 	
+	# vote the other, just visiting
+	b.get('http://www.prisonstruggle.com/vote.php?on=7')
+	b.get('http://www.prisonstruggle.com/vote.php?on=1')
+	b.get('http://www.prisonstruggle.com/vote.php?on=3')
+	b.get('http://www.prisonstruggle.com/vote.php?on=6')
+	b.get('http://www.prisonstruggle.com/vote.php?on=8')
+			
 def worker():
 	global b, is_run
 	
