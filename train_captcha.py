@@ -114,7 +114,7 @@ def bot_check_general():
 			b.save_screenshot('advance_{}-{}-{} {}-{}-{}.png'
 			.format(_y, _M, _d, _h, _m, _s))
 			with open('advance_{}-{}-{} {}-{}-{}.debug.txt'
-			.format(_y, _M, _d, _h, _m, _s) ,'w') as f:
+			.format(_y, _M, _d, _h, _m, _s) ,'wb') as f:
 				f.write(b.page_source)
 			logout(True)
 			for i in range(SLEEP_TIME, -1, -1):
@@ -132,7 +132,7 @@ def bot_check_general():
 		b.save_screenshot('bot_{}-{}-{} {}-{}-{}.png'
 		.format(_y, _M, _d, _h, _m, _s))
 		with open('bot_{}-{}-{} {}-{}-{}.debug.txt'
-		.format(_y, _M, _d, _h, _m, _s) ,'w') as f:
+		.format(_y, _M, _d, _h, _m, _s) ,'wb') as f:
 			f.write(b.page_source)
 		
 		# get image text
