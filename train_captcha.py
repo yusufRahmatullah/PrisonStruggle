@@ -36,22 +36,19 @@ def segment_image():
 			name = '{}_{}.png'.format(i, j+1)
 			im = img.crop((left, top, right, bottom))
 			im.save(name)
-
+	
+def extend_image_data(data):
+	if len(data[0]) == 3:
+		for i in xrange(len(data)):
+			data[i] = data[i] + (255, )
+	
 def get_captcha_text(name='login.png'):
 	global captcha_data
 	
 	top = 4
 	bottom = 14
 	
-	if captcha_data == None:
-		captcha_data = {}
-		for i in range(10):
-			img = Image.open('data-{}.png'.format(i))
-			temp_data = list(img.getdata())
-			cap_data = []
-			for d in temp_data:
-				cap_data.append(d + (255,))
-			captcha_data[i] = cap_data
+	load_captcha_data()
 	
 	img = Image.open(name)
 	result = []
@@ -60,6 +57,7 @@ def get_captcha_text(name='login.png'):
 		right = left + 8
 		im = img.crop((left, top, right, bottom))
 		temp_data = list(im.getdata())
+		extend_image_data(temp_data)
 		for key in captcha_data.iterkeys():
 			if temp_data == captcha_data[key]:
 				result.append(str(key))
@@ -85,6 +83,17 @@ def get_captcha_image(name='0.png'):
 			im = img.crop((left, top, right, bottom))
 			im.save(name)
 	
+def load_captcha_data():
+	global captcha_data
+	
+	if captcha_data == None:
+		captcha_data = {}
+		for i in range(10):
+			img = Image.open('data-{}.png'.format(i))
+			temp_data = list(img.getdata())
+			extend_image_data(temp_data)
+			captcha_data[i] = temp_data
+
 #endregion
 
 #region bot check
@@ -112,15 +121,7 @@ def bot_check_general():
 		input_loc = (490, 473)
 		btn_loc = (544, 468)
 
-		if captcha_data == None:
-			captcha_data = {}
-			for i in range(10):
-				img = Image.open('data-{}.png'.format(i))
-				temp_data = list(img.getdata())
-				cap_data = []
-				for d in temp_data:
-					cap_data.append(d + (255,))
-				captcha_data[i] = cap_data
+		load_captcha_data()
 		
 		b.save_screenshot('whole_bot.png')
 		img = Image.open('whole_bot.png')
@@ -307,24 +308,30 @@ def failed_mug():
 	global b
 	
 	bot_check_general()
-	b.get('http://www.prisonstuggle.com/mugcontract.php?section=accepted')
-	imgs = b.find_elements_by_tag_name('img')
-	target = None
-	for img in imgs:
+	b.get('http://www.prisonstruggle.com/mugcontract.php?section=accepted')
+	try:		
 		try:
-			if 'mug.png' in img.get_attribute('src'):
-				target = img
-				break
+			num = b.find_element_by_xpath('//table[@id="contracts"]/tbody/tr[2]/td[3]').text
+			script_text = b.find_element_by_xpath('//table[@id="contracts"]/tbody/tr[2]/td[7]').get_attribute('innerHTML')
+			secs = int(re.findall('\d+', script_text)[0])
+			print('[failed_mug] num mug: {}'.format(num))
 		except Exception as e:
-			print '[failed_mug] ', e
-			pass
-	if target != None:
+			print('[failed_mug] err: {}'.format(e))
+		target = b.find_element_by_xpath('//img[@src="images/mugcontract/mug.png"]')
 		target.click()
-		print('[failed_mug] do failed mugging')
 		return True
-	else:
-		print('[failed_mug] no contract')
+	except Exception as e:
+		print('[failed_mug] err: {}'.format(e))
 		return False
+	
+def gang_invite():
+	global b
+	
+	b.get('http://www.prisonstruggle.com/ganginvites.php')
+	try:
+		b.find_element_by_xpath('//input[@class="advBtn"][@title="Decline"]').click()
+	except Exception as e:
+		print('[gang_invite] err: {}'.format(e))
 
 def gym():
 	global b
@@ -338,7 +345,7 @@ def gym():
 		_max = int(_temp[1])
 		
 		if _val != _max:
-			print '[gym] energy:{}'.format(_val) 
+			# print '[gym] energy:{}'.format(_val) 
 			return
 		
 		str_text = b.find_element_by_xpath("//td[@class='contentcontent']/table/tbody/tr[1]/td[2]").text
@@ -355,7 +362,7 @@ def gym():
 			_spd = int(spd_temp)
 		
 		str_btn = b.find_element_by_xpath("//input[@class='button'][@name='gts']")
-		spd_btn = b.find_element_by_xpath("//input[@class='button'][@name='gtd']")
+		spd_btn = b.find_element_by_xpath("//input[@class='button'][@name='gtss']")
 		
 		if _str > _spd:
 			spd_btn.click()
@@ -430,6 +437,57 @@ def money_check():
 	except Exception as e:
 		pass
 		
+def print_personal_info():
+	global b
+	
+	debug = ''
+	try:
+		first_idx = 4
+		if 'View Gang Invites' in b.page_source:
+			print('There is gang invites')
+			# first_idx += 2
+			gang_invite()
+		b.get('http://www.prisonstruggle.com/index.php')
+		general_info_path = '//table[@class="mainbox"]/tbody/tr[{}]/td[1]/table/tbody'.format(first_idx)
+		
+		hp = b.find_element_by_xpath('{}/tr[1]/td[4]'.format(general_info_path)).text
+		level = b.find_element_by_xpath('{}/tr[2]/td[2]'.format(general_info_path)).text
+		energy = b.find_element_by_xpath('{}/tr[2]/td[4]'.format(general_info_path)).text
+		money = b.find_element_by_xpath('{}/tr[3]/td[2]'.format(general_info_path)).text
+		awake = b.find_element_by_xpath('{}/tr[3]/td[4]'.format(general_info_path)).text
+		bank = b.find_element_by_xpath('{}/tr[4]/td[2]'.format(general_info_path)).text
+		nerve = b.find_element_by_xpath('{}/tr[4]/td[4]'.format(general_info_path)).text
+		exp = b.find_element_by_xpath('{}/tr[5]/td[2]'.format(general_info_path)).text
+		
+		attributes_path = '//table[@class="mainbox"]/tbody/tr[{}]/td/table/tbody'.format(first_idx+2)
+		
+		strength = b.find_element_by_xpath('{}/tr[1]/td[2]'.format(attributes_path)).text
+		defense = b.find_element_by_xpath('{}/tr[1]/td[4]'.format(attributes_path)).text
+		speed = b.find_element_by_xpath('{}/tr[2]/td[2]'.format(attributes_path)).text
+		total = b.find_element_by_xpath('{}/tr[2]/td[4]'.format(attributes_path)).text
+				
+		print('\n===========================')
+		print('PERSONAL INFO')
+		print('---------------------------')
+		print('Level: {}'.format(level))
+		print('Money: {}'.format(money))
+		print('Bank: {}'.format(bank))
+		print('Level: {}'.format(level))
+		print('\n')
+		print('HP: {}'.format(hp))
+		print('Energy: {}'.format(energy))
+		print('Awake: {}'.format(awake))
+		print('HP: {}'.format(hp))
+		print('Nerve: {}'.format(nerve))
+		print('\n')
+		print('Strength: {}'.format(strength))
+		print('Defense: {}'.format(defense))
+		print('Speed: {}'.format(speed))
+		print('Total: {}'.format(total))
+		print('===========================\n')
+	except Exception as e:
+		print('[personal info] err:{}'.format(e))
+
 def search_the_prison_yard():
 	global b
 	
@@ -504,6 +562,7 @@ def worker():
 	
 	while is_run:
 		login_check()
+		print_personal_info()
 		search_the_prison_yard_and_vote_check()
 		money_check()
 		daily_visit_check()
@@ -516,7 +575,9 @@ def worker():
 		for i in xrange(SLEEP_TIME, -1, -1):
 			if is_run:
 				time.sleep(1)
-	
+
+#endregion
+
 if __name__ == '__main__':
 	init()
 	login()
