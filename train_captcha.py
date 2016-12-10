@@ -104,14 +104,37 @@ def bot_check_general():
 	if 'Bot Check' in b.page_source:
 		if 'Warning:' in b.page_source:
 			print '[Bot Check] Bot Detected by Advance'
-			b.save_screenshot('adv_bot_{}.png'.format(time.time()))
+			gmtime = time.gmtime()
+			_y = gmtime.tm_year
+			_M = gmtime.tm_mon
+			_d = gmtime.tm_mday
+			_h = gmtime.tm_hour
+			_m = gmtime.tm_min
+			_s = gmtime.tm_sec
+			b.save_screenshot('advance_{}-{}-{} {}-{}-{}.png'
+			.format(_y, _M, _d, _h, _m, _s))
+			with open('advance_{}-{}-{} {}-{}-{}.debug.txt'
+			.format(_y, _M, _d, _h, _m, _s) ,'w') as f:
+				f.write(b.page_source)
 			logout(True)
 			for i in range(SLEEP_TIME, -1, -1):
 				time.sleep(1)
 			login_check()
-			return True
 			
 		print '[Bot Check] Bot detected'
+		gmtime = time.gmtime()
+		_y = gmtime.tm_year
+		_M = gmtime.tm_mon
+		_d = gmtime.tm_mday
+		_h = gmtime.tm_hour
+		_m = gmtime.tm_min
+		_s = gmtime.tm_sec
+		b.save_screenshot('bot_{}-{}-{} {}-{}-{}.png'
+		.format(_y, _M, _d, _h, _m, _s))
+		with open('bot_{}-{}-{} {}-{}-{}.debug.txt'
+		.format(_y, _M, _d, _h, _m, _s) ,'w') as f:
+			f.write(b.page_source)
+		
 		# get image text
 		LEFT = 489
 		TOP = 449
@@ -147,7 +170,6 @@ def bot_check_general():
 					break
 		if len(result) != 5:
 			b.save_screenshot('whole_bot.png')
-			return False
 		bot_text = ''.join(result)
 		print '[Bot Check] result:', bot_text
 
@@ -173,7 +195,6 @@ def bot_check_general():
 						break
 			except Exception as e:
 				pass
-	return True
 
 def bot_check_alert():
 	global b
