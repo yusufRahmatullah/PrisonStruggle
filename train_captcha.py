@@ -115,7 +115,10 @@ def bot_check_general():
 			.format(_y, _M, _d, _h, _m, _s))
 			with open('advance_{}-{}-{} {}-{}-{}.debug.txt'
 			.format(_y, _M, _d, _h, _m, _s) ,'wb') as f:
-				f.write(b.page_source)
+				try:
+					f.write(b.page_source)
+				except:
+					pass
 			logout(True)
 			for i in range(SLEEP_TIME, -1, -1):
 				time.sleep(1)
@@ -133,7 +136,10 @@ def bot_check_general():
 		.format(_y, _M, _d, _h, _m, _s))
 		with open('bot_{}-{}-{} {}-{}-{}.debug.txt'
 		.format(_y, _M, _d, _h, _m, _s) ,'wb') as f:
-			f.write(b.page_source)
+			try:
+				f.write(b.page_source)
+			except:
+				pass
 		
 		# get image text
 		LEFT = 489
