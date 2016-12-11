@@ -10,6 +10,7 @@
 *.log
 log.txt
 *.debug.txt
+debug/
 
 # Prison Struggle Config
 config.json
